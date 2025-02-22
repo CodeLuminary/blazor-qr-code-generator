@@ -1,0 +1,77 @@
+# Build Folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# ASP.NET Core
+wwwroot/dist/
+wwwroot/node_modules/
+appsettings.Development.json  # If it contains sensitive info
+
+# Entity Framework Migrations
+Migrations/
+
+# Logs
+*.log
+
+# OS Specific
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# .NET Core specific
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Node (if using NPM/Yarn)
+node_modules/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Environment Variables
+.env
+.env.*
+
+# Testing
+TestResults/
+coverage/
+
+# Package Managers
+*.nupkg
+*.snupkg
+*.vsix
+
+# VS Code Extensions
+.vscode/
+
+# Publish outputs
+publish/
+*.publish.xml
+
+# Azure Functions local settings
+local.settings.json
+
+# JetBrains Rider
+.idea/
+
+# Visual Studio specific
+.vs/
+
+__pycache__
+
+.pytest_cache

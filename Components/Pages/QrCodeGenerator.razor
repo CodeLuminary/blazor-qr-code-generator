@@ -1,0 +1,83 @@
+@page "/qrcode-generator"
+@using QRCoder
+@using System.IO
+@using System.ComponentModel.DataAnnotations;
+@rendermode InteractiveServer
+@inject IWebHostEnvironment Environment
+
+<h3>QR Code Generator</h3>
+
+<EditForm Model="@qrCodeModel" OnValidSubmit="GenerateQrCode" FormName="form1">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="QrCodeText">Text to encode:</label>
+        <InputText id="QrCodeText" class="form-control" @bind-Value="qrCodeModel.QrCodeText" />
+    </div>
+
+    <div class="form-group">
+        <label for="FolderName">Folder Name:</label>
+        <InputText id="FolderName" class="form-control" @bind-Value="qrCodeModel.FolderName" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Generate QR Code</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(qrCodeImageSrc))
+{
+    <h3>Generated QR Code:</h3>
+    <label>@qrCodeFileName</label><br/>
+    <img src="@qrCodeImageSrc" alt="QR Code" />
+}
+
+@code {
+    private QrCodeModel qrCodeModel = new QrCodeModel();
+    
+    private string qrCodeImageSrc;
+    private string qrCodeFileName;
+
+    public class QrCodeModel
+    {
+        [Required(ErrorMessage = "Text is required.")]
+        public string QrCodeText { get; set; }
+
+        [Required(ErrorMessage = "Folder Name is required.")]
+        public string FolderName { get; set; }
+    }
+
+    private async Task GenerateQrCode()
+    {
+        try
+        {
+            string folderPath = Path.Combine(Environment.WebRootPath, "qrcodes", qrCodeModel.FolderName);
+
+            // Ensure the directory exists
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string fileName = $"{DateTime.Now.Ticks}.png"; // Use a unique filename
+            string filePath = Path.Combine(folderPath, fileName);
+
+            qrCodeFileName = "File name: " + fileName;
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrCodeModel.QrCodeText, QRCodeGenerator.ECCLevel.Q);
+            PngByteQRCode qrCode = new PngByteQRCode(qrCodeData);
+            byte[] qrCodeAsPng = qrCode.GetGraphic(20);
+
+            await File.WriteAllBytesAsync(filePath, qrCodeAsPng);
+
+            qrCodeImageSrc = $"qrcodes/{qrCodeModel.FolderName}/{fileName}";
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            Console.Error.WriteLine($"Error generating QR code: {ex.Message}");
+            // Optionally display an error message to the user
+            qrCodeImageSrc = null; // Ensure no broken image is displayed
+        }
+    }
+}

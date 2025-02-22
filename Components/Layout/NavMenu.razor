@@ -1,0 +1,30 @@
+﻿
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">QrCodeApp</a>
+    </div>
+</div>
+
+<input class="navbar-toggler" type="checkbox" title="Navigation menu" aria-label="Toggle navigation" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').classList.toggle('collapsed')">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/qrcode-generator">
+                <span class="oi oi-plus" aria-hidden="true"></span> Generate QR Code
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/qrcode-display">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Display QR Code
+            </NavLink>
+        </div>
+    </nav>
+</div>
